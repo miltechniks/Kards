@@ -41,6 +41,14 @@
       </div>
     </div>
     </transition>
+    <transition name="fade">
+    <div class="diagonalLines" v-if="config.grid.diagonals">
+        <svg viewBox="-960 -540 1920 1080" height="100%" width="100%" preserveAspectRatio="none">
+          <line x1="-960" y1="-540" x2="960" y2="540" :stroke="config.grid.diagColour"  stroke-width="2" />
+          <line x1="-960" y1="540" x2="960" y2="-540" :stroke="config.grid.diagColour" stroke-width="2" />
+        </svg>
+      </div>
+    </transition>
     <info-circle v-if="config.infoCircleAnimated" :config="config" :info="info"/>
   </div>
 </template>
@@ -128,6 +136,17 @@ import InfoCircle from './InfoCircle'
   height: 80%;
   width: 80%;
   overflow: hidden;
-  /* border: 2px solid red; */
+   /* border: 2px solid red;  */
+}
+
+.diagonalLines {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  /* border: 2px solid red;  */
 }
 </style>
