@@ -1,3 +1,10 @@
+const crypto = require('crypto');
+
+// Workaround für Node 17+ und OpenSSL 3:
+// Ersetzt den von Webpack geforderten (aber fehlenden) 'md4'-Algorithmus durch 'sha256'
+const fallbackCreateHash = crypto.createHash;
+crypto.createHash = algorithm => fallbackCreateHash(algorithm === 'md4' ? 'sha256' : algorithm);
+
 module.exports = {
     pluginOptions: {
       electronBuilder: {

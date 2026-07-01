@@ -13,7 +13,7 @@ var bonjour = require('bonjour')()
 const mime = require('mime-types')
 
 // Project specific includes
-const touchBar = require('./touchBar.js')
+const touchBar = require('./touchbar.js')
 const fs = require('fs')
 const say = require('say')
 // var sizeOf = require('image-size')
