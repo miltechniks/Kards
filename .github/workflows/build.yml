@@ -29,7 +29,7 @@ jobs:
 
       - name: Create env.json
         run: |
-          cp env.json.example > env.json
+          cp env.json.example env.json
 
       - name: Build Kards App
         run: yarn run electron:build
