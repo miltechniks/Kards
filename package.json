@@ -83,6 +83,7 @@
     "url": "https://github.com/Alteka/Kards"
   },
   "resolutions": {
-    "@electron/universal": "^1.2.1"
+    "@electron/universal": "^1.2.1",
+    "electron-builder": "^23.6.0"
   }
 }
