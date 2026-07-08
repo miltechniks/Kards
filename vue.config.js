@@ -29,6 +29,7 @@ module.exports = {
       }
     },
     transpileDependencies: [
-      'element-plus'
+      'element-plus',
+      '@ctrl/tinycolor'
     ]
   }
