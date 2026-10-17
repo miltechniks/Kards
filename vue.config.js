@@ -9,7 +9,8 @@ module.exports = {
   pluginOptions: {
     electronBuilder: {
       preload: 'src/preload.js',
-      builderOptions: { 
+      externals: ['rollbar'],
+      builderOptions: {
         "productName": "Kards",
         "appId": "solutions.alteka.kards",
         "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
@@ -32,10 +33,5 @@ module.exports = {
     'element-plus',
     '@ctrl/tinycolor',
     'rollbar'
-  ],
-  pluginOptions: {
-    electronBuilder: {
-      externals: ['rollbar']
-    }
-  }
+  ]
 }
