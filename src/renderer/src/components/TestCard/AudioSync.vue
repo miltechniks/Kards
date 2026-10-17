@@ -69,7 +69,8 @@ export default {
   data: function() {
     return {
       description: "Default Interface",
-      rates: ['24', '25', '29-97', '30', '50', '59-94', '60' ]
+      rates: ['24', '25', '29-97', '30', '50', '59-94', '60', '100', '120'],
+      devices: []
     }
   },
   computed: {
@@ -84,30 +85,37 @@ export default {
         handler: function (val) { 
           this.updateDeviceName(val)
          },
-        deep: true
+        deep: true,
+        flush: 'post'
       },
     },
     methods: {
       updateDeviceName: function(val) {
+        const active = this.devices.find(device => device.deviceId == val.audioSync.deviceId) || this.devices.find(device => device.deviceId == 'default')
+        const deviceId = active ? active.deviceId : 'default'
         for (const rate in this.rates) {
           let element = document.getElementById('vt' + this.rates[rate])
           if (element !== null) {
-            element.setSinkId(val.audioSync.deviceId)
+            element.setSinkId(deviceId).catch(() => element.setSinkId('default'))
           }
         }
-        
+        if (active) {
+          this.description = active.label
+        }
+      },
+      refreshDevices: function() {
         navigator.mediaDevices.enumerateDevices().then((devices) => {
-          devices = devices.filter(device => device.kind === 'audiooutput')
-          for (const dev of devices) {
-            if (dev.deviceId == val.audioSync.deviceId) {
-              this.description = dev.label
-            }
-          }
+          this.devices = devices.filter(device => device.kind === 'audiooutput')
+          this.updateDeviceName(this.config)
         })
       }
     },
     mounted: function() {
-      this.updateDeviceName(this.config)
+      navigator.mediaDevices.addEventListener('devicechange', this.refreshDevices)
+      this.refreshDevices()
+    },
+    unmounted: function() {
+      navigator.mediaDevices.removeEventListener('devicechange', this.refreshDevices)
     }
 }
 </script>

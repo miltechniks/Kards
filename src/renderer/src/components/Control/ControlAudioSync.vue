@@ -2,7 +2,7 @@
 <div>
   <el-row>
     <el-form-item label="Audio Device" label-width="140px">
-      <el-select v-model="audioSync.deviceId" placeholder="Select" style="width: 353px;">
+      <el-select v-model="selectedDeviceId" placeholder="Select" style="width: 353px;">
           <el-option v-for="item in audioDevices" :key="item.deviceId" :label="item.label" :value="item.deviceId"></el-option>
       </el-select>
     </el-form-item>
@@ -27,6 +27,14 @@
       displayFrequency: Number
     },
     computed: {
+      selectedDeviceId: {
+        get() {
+          return this.audioDevices.some(device => device.deviceId == this.audioSync.deviceId) ? this.audioSync.deviceId : 'default'
+        },
+        set(value) {
+          this.audioSync.deviceId = value
+        }
+      },
       audioSync: {
         get() {
           return this.modelValue // return v-model

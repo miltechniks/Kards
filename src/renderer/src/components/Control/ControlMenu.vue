@@ -78,7 +78,7 @@
         </el-col>
         <el-col :span="16">
           <el-form-item label="Device" label-width="70px">
-            <el-select v-model="config.audio.deviceId" placeholder="Select" style="width: 310px;">
+            <el-select v-model="selectedDeviceId" placeholder="Select" style="width: 310px;">
                 <el-option v-for="item in audioDevices" :key="item.deviceId" :label="item.label" :value="item.deviceId"></el-option>
             </el-select>
           </el-form-item>
@@ -152,6 +152,17 @@ let loadingInstance
       darkMode: Boolean
     },
     computed: {
+      selectedDeviceId: {
+        get() {
+          return this.activeDeviceId
+        },
+        set(value) {
+          this.config.audio.deviceId = value
+        }
+      },
+      activeDeviceId: function() {
+        return this.audioDevices.some(device => device.deviceId == this.config.audio.deviceId) ? this.config.audio.deviceId : 'default'
+      },
       config: {
         get() {
           return this.modelValue // return v-model
@@ -181,6 +192,7 @@ let loadingInstance
       this.updateDevices()
       setInterval(this.updateDevices, 5000)
       setTimeout(this.doNameUpdate, 2000)
+      this.applySink()
 
       document.getElementById('stereo').src = stereoWav
       document.getElementById('pink').src = pinkWav
@@ -207,18 +219,11 @@ let loadingInstance
       
     },
     watch: {
+      activeDeviceId: function() {
+        this.applySink()
+      },
       config: {
         handler: function (val, oldVal) { 
-            document.getElementById('stereo').setSinkId(val.audio.deviceId)
-            document.getElementById('phase').setSinkId(val.audio.deviceId)
-            document.getElementById('pink').setSinkId(val.audio.deviceId)
-            document.getElementById('white').setSinkId(val.audio.deviceId)
-            document.getElementById('tone').setSinkId(val.audio.deviceId)
-            document.getElementById('sweep').setSinkId(val.audio.deviceId)
-            document.getElementById('voice').setSinkId(val.audio.deviceId)
-            document.getElementById('text').setSinkId(val.audio.deviceId)
-            document.getElementById('file').setSinkId(val.audio.deviceId)
-
             if (val.name != this.name) {
               this.name = val.name
               this.doNameUpdate()
@@ -289,6 +294,12 @@ let loadingInstance
           this.audioDevices = devices.filter(device => device.kind === 'audiooutput').filter(device => device.deviceId != 'communications')
           window.ipcRenderer.send('audioDevices', JSON.parse(JSON.stringify(this.audioDevices)))
         })  
+      },
+      applySink: function() {
+        for (const id of ['stereo', 'phase', 'pink', 'white', 'tone', 'sweep', 'voice', 'text', 'file']) {
+          const element = document.getElementById(id)
+          element.setSinkId(this.activeDeviceId).catch(() => element.setSinkId('default'))
+        }
       },
       ipcSend: function(val) {
         window.ipcRenderer.send(val)
