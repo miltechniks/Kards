@@ -3,87 +3,56 @@
   "version": "1.3.1",
   "description": "A cross-platform test card generator for AV professionals",
   "author": "Alteka Solutions <info@alteka.solutions>",
+  "type": "module",
+  "main": "./out/main/index.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "electron:build": "vue-cli-service electron:build",
-    "electron:build:matt": "vue-cli-service electron:build --mac --x64",
-    "electron:build:universal": "vue-cli-service electron:build --universal",
-    "electron:serve": "vue-cli-service electron:serve",
-    "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "dev": "electron-vite dev -- --ozone-platform=x11",
+    "build": "electron-vite build",
+    "preview": "electron-vite preview -- --ozone-platform=x11",
+    "lint": "eslint .",
+    "electron:build": "electron-vite build && electron-builder",
+    "electron:build:matt": "electron-vite build && electron-builder --mac --x64",
+    "electron:build:universal": "electron-vite build && electron-builder --mac --universal",
+    "postinstall": "electron-builder install-app-deps"
   },
-  "main": "background.js",
   "dependencies": {
-    "@electron/universal": "^2.0.1",
-    "@fortawesome/fontawesome-free": "^6.1.1",
-    "axios": "0.32.0",
-    "body-parser": "^1.19.1",
-    "bonjour": "^3.5.0",
-    "compare-versions": "^4.1.3",
-    "core-js": "^3.6.5",
-    "dom-to-image": "^2.6.0",
-    "electron-log": "^4.4.4",
-    "electron-store": "^8.0.1",
-    "element-plus": "2.14.2",
-    "express": "^4.17.2",
-    "mime-types": "^2.1.34",
-    "mousetrap": "^1.6.5",
+    "bonjour": "^3.5.1",
+    "compare-versions": "^6.1.1",
+    "electron-log": "^5.4.4",
+    "electron-store": "^12.0.0",
+    "express": "^5.3.0",
+    "mime-types": "^3.0.2",
     "osc-js": "^2.3.1",
-    "rollbar": "^3.1.0",
+    "rollbar": "^4.0.0",
     "say": "^0.16.0",
-    "uuid": "^14.0.0",
-    "vue": "^3.0.0",
-    "vue-router": "^4.0.0-0",
-    "vue3-resize": "^0.2.0",
-    "vue3-resize-text": "^0.1.0",
-    "wallpaper": "5.0.1"
+    "wallpaper": "^7.3.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.29.6",
-    "@babel/eslint-parser": "^7.12.16",
-    "@vue/cli-plugin-babel": "~4.5.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
-    "@vue/compiler-sfc": "^3.0.0",
-    "electron": "^39.8.5",
-    "electron-devtools-installer": "^3.1.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-vue": "^8.0.3",
-    "sass": "^1.49.11",
-    "sass-loader": "^10.0.4",
-    "vue-cli-plugin-electron-builder": "~2.1.1",
-    "vue-cli-plugin-element-plus": "~0.0.13"
+    "@eslint/js": "^10.0.1",
+    "@fortawesome/fontawesome-free": "^7.3.1",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "dom-to-image": "^2.6.0",
+    "electron": "^44.9.0",
+    "electron-builder": "^26.15.3",
+    "electron-devtools-installer": "^4.0.0",
+    "electron-vite": "^6.0.0",
+    "element-plus": "^2.14.7",
+    "eslint": "^10.13.0",
+    "eslint-plugin-vue": "^10.11.1",
+    "globals": "^17.13.0",
+    "mousetrap": "^1.6.5",
+    "sass": "^1.105.2",
+    "vite": "^8.3.4",
+    "vue": "^3.5.44",
+    "vue-eslint-parser": "^10.4.1",
+    "vue-router": "^5.4.0",
+    "vue3-resize": "^0.2.0",
+    "vue3-resize-text": "^0.1.0"
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/vue3-essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "@babel/eslint-parser"
-    },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ],
   "homepage": "http://www.alteka.solutions",
   "license": "GPL-3.0-only",
   "repository": {
     "type": "git",
     "url": "https://github.com/Alteka/Kards"
-  },
-  "resolutions": {
-    "@electron/universal": "^1.2.1",
-    "electron-builder": "^23.6.0"
   }
 }

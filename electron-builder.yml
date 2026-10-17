@@ -1,0 +1,18 @@
+productName: Kards
+appId: solutions.alteka.kards
+artifactName: ${productName}-${version}-${os}-${arch}.${ext}
+directories:
+  output: dist_electron
+  buildResources: build
+files:
+  - out/**/*
+  - package.json
+mac:
+  icon: build/icon.png
+  target: pkg
+win:
+  icon: build/icon.png
+nsis:
+  oneClick: false
+  createDesktopShortcut: false
+  menuCategory: true

@@ -16,20 +16,22 @@ A note to say that whilst the app generates specific levels, which match standar
 
 #### Design
 
-The app is based around Electron to create and manage the windows. The content is heavily Vue.js driven, with some custom components to create the test cards.
+The app is based around Electron to create and manage the windows. The content is heavily Vue.js driven, with some custom components to create the test cards. It is built with electron-vite and packaged with electron-builder.
 
 #### Build Setup
 ``` bash
 # Clone the repo into a folder
 # cd into the folder and run the below
-# You'll need to have node.js as well as Yarn package manager
-# Currently building with node 16.20.2
+# You'll need to have node.js (20.19+ or 22.12+) as well as Yarn package manager
 
 # install dependencies
 yarn install
 
-# serve with hot reload at localhost:9080
-yarn run electron:serve
+# create the environment file (holds the optional Rollbar token)
+cp env.json.example env.json
+
+# start in development mode with hot reload
+yarn dev
 
 # build electron application for production
 yarn run electron:build
