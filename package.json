@@ -6,9 +6,9 @@
   "type": "module",
   "main": "./out/main/index.js",
   "scripts": {
-    "dev": "electron-vite dev",
+    "dev": "electron-vite dev -- --ozone-platform=x11",
     "build": "electron-vite build",
-    "preview": "electron-vite preview",
+    "preview": "electron-vite preview -- --ozone-platform=x11",
     "lint": "eslint .",
     "electron:build": "electron-vite build && electron-builder",
     "electron:build:matt": "electron-vite build && electron-builder --mac --x64",

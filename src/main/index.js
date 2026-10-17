@@ -49,6 +49,15 @@ if (!env.rollbarToken) {
 //======================================//
 //      BOILER PLATE ELECTRON STUFF     //
 //======================================//
+// Wayland ignores window positions, so the test card would always open on the focused display.
+// Relaunch under XWayland, where placing the window on the selected screen works.
+if (process.platform === 'linux' && process.env.WAYLAND_DISPLAY && process.env.DISPLAY && !process.argv.some(arg => arg.startsWith('--ozone-platform'))) {
+  log.info('Wayland session detected - relaunching under XWayland')
+  // An AppImage's mount point disappears when this process exits, so relaunch the AppImage file itself
+  app.relaunch({ execPath: process.env.APPIMAGE || process.execPath, args: [...process.argv.slice(1), '--ozone-platform=x11'] })
+  app.exit(0)
+}
+
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true, stream: true, supportFetchAPI: true } }
 ])
