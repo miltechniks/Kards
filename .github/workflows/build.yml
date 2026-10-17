@@ -44,5 +44,6 @@ jobs:
             dist_electron/*.AppImage
             dist_electron/*.exe
             dist_electron/*.dmg
+            dist_electron/*.pkg
             dist_electron/*.zip
           if-no-files-found: warn
