@@ -9,7 +9,7 @@ module.exports = {
   pluginOptions: {
     electronBuilder: {
       preload: 'src/preload.js',
-      externals: ['rollbar'],
+      externals: ['rollbar', 'electron-log'],
       builderOptions: {
         "productName": "Kards",
         "appId": "solutions.alteka.kards",
@@ -31,6 +31,7 @@ module.exports = {
   },
   transpileDependencies: [
     'element-plus',
+    'vue-router',
     '@ctrl/tinycolor',
     'rollbar'
   ]

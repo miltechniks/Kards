@@ -1,6 +1,5 @@
 const { ipcMain, dialog } = require('electron')
 const express = require('express')
-var bodyParser = require('body-parser')
 const log = require('electron-log')
 const EventEmitter = require('events')
 var bonjour = require('bonjour')()
@@ -19,7 +18,7 @@ class restServer extends EventEmitter {
         this.screens = []
         this.audioDevices = []
 
-        this._jsonParser = bodyParser.json()
+        this._jsonParser = express.json()
     }
 
     setup() {
@@ -62,7 +61,7 @@ class restServer extends EventEmitter {
 
         this._app.get('/screens', this._handleScreens.bind(this))
         this._app.get('/audioDevices', this._handleAudioDevices.bind(this))
-        this._app.get('/*', this._handleGet.bind(this))
+        this._app.get('/{*path}', this._handleGet.bind(this))
         this._app.put('/', this._jsonParser, this._handlePut.bind(this))
     }
 
@@ -101,7 +100,7 @@ class restServer extends EventEmitter {
     }
 
     _handlePut(req, res) {
-        if (Object.keys(req.body).length > 0) {
+        if (req.body && Object.keys(req.body).length > 0) {
             const returnedTarget = this.mergeDeep(this.config, req.body)
             this.emit('updateConfig', returnedTarget)
 

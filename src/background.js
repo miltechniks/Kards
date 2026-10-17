@@ -2,11 +2,10 @@
 
 import { app, protocol, BrowserWindow, ipcMain, dialog, shell, screen, nativeTheme } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import installExtension, { VUEJS3_DEVTOOLS } from 'electron-devtools-installer'
-import compareVersions from 'compare-versions'
+import { installExtension, VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import { compareVersions } from 'compare-versions'
 const log = require('electron-log')
 const { networkInterfaces, hostname } = require('os')
-const axios = require('axios')
 const Store = require('electron-store')
 const path = require('path')
 var bonjour = require('bonjour')()
@@ -87,7 +86,7 @@ app.on('activate', () => {
 app.on('ready', async () => {
   if (isDevelopment && !process.env.IS_TEST) {
     try {
-      await installExtension(VUEJS3_DEVTOOLS)
+      await installExtension(VUEJS_DEVTOOLS)
     } catch (e) {
       log.error('Vue Devtools failed to install:', e.toString())
     }
@@ -323,7 +322,7 @@ ipcMain.on('openLogs', () => {
 })
 
 function openLogs() {
-  const path = log.transports.file.findLogPath()
+  const path = log.transports.file.getFile().path
   shell.showItemInFolder(path)
 }
 
@@ -837,10 +836,16 @@ function importSettings() {
 //     Update Checker     //
 //========================//
 setTimeout(function() {
-  axios.get('https://api.github.com/repos/alteka/kards/releases/latest')
+  fetch('https://api.github.com/repos/alteka/kards/releases/latest')
     .then(function (response) {
-      let online = response.data.tag_name
-      let status = compareVersions(online, version, '>')
+      if (!response.ok) {
+        throw new Error('Update :: GitHub API returned ' + response.status)
+      }
+      return response.json()
+    })
+    .then(function (release) {
+      let online = release.tag_name
+      let status = compareVersions(online, version)
       if (status == 1) { 
         log.info('Update :: A newer version (' + online + ') is available. ' + version + ' currently installed.')
         dialog.showMessageBox(controlWindow, {
